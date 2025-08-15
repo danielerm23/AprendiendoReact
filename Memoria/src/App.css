@@ -1,0 +1,22 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+body{
+  background-color: pink;
+}
+.componente-principal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 columnas iguales */
+  gap: 2px; /* espacio entre elementos */
+  height: auto;
+  width: auto;
+  border: 2px solid white;
+   perspective: 1000px;
+}
