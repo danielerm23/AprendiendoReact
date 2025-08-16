@@ -2,14 +2,14 @@ import React from "react";
 import { useState } from "react";
 import "./CSS/fichas.css"
 
-export function Fichas ({id, voltear, imagen, manejarClic}){
+export function Ficha ({id, voltear, nombre, manejarClic}){
     return (
         <div className={voltear ? "voltear card" : "card"}
             onClick={()=>manejarClic(id)}>
             <div className="fichas">
                 <img 
-                    src={`../../public/img/${imagen}.jpg`}
-                    alt={`foto de ${imagen} `} />
+                    src={`../../public/img/${nombre}.jpg`}
+                    alt={`foto de ${nombre} `} />
             </div>
             <div className ="cara-oculta">
                 <h3>escondida</h3>

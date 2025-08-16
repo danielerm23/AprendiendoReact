@@ -1,57 +1,81 @@
 import React from 'react'
 import { useState } from 'react'
 import './App.css'
-import { Fichas } from "./componentes/fichas"
-import { FICHAS } from './contants'
+import { Ficha } from "./componentes/ficha.jsx"
+import { FICHAS } from './contants.js'
 
 function App() {
-  const [datos, setDatos] = useState({
-    contador: 0,
-    nombre: [""]
-
-  })
 
   const [fichas, setFichas] = useState(FICHAS)
+  const [contador, setContador] = useState(0)
 
-  const manejarClic = id => {
-
-    fichas.forEach(ficha => {
-      if (ficha.id === id && ficha.resuelto == false) {
-        ficha.voltear = !ficha.voltear
-      }
-      if (ficha.voltear === true && datos.contador < 2) {
-        datos.nombre.push(ficha.imagen)
-        datos.contador = datos.contador++
-      }
-    });
-    if (datos.contador == 2) {
-      if (datos.nombre[0] == datos.nombre[1]) {
-        const fichasActualizadas = fichas.map((ficha) => {
-          if (ficha.imagen == datos.nombre[0]) {
-            ficha.resuelto === true
-            setDatos({
-              contador: 0,
-              nombre: [""]
-            })
-          }
-        })
-        setFichas([...fichasActualizadas])
-      }
+  const handleContador = (id, nombre) => {
+    setContador(prev => prev + 1)
+    const valor = contador+1
+    if (valor==2){      
+      validacion(id, nombre)
     }
-
-    setFichas([...fichas])
   }
+
+  const resetHandleContador = () => {
+    setContador (0)
+  }
+
+  const isMatched = (id, nombre) => {
+    return fichas.some((ficha) => 
+      (ficha.id !== id && nombre === ficha.nombre && ficha.voltear === true)
+    )
+  }
+
+  const voltearHaciaArriba = (id) => {
+    const fichasNuevas = fichas.map((ficha) => {
+      if(ficha.id===id && ficha.resuelto === false && ficha.voltear === false){
+        ficha.voltear=true
+        handleContador(ficha.id, ficha.nombre)
+      }
+      return ficha
+    })
+    setFichas(fichasNuevas)
+  }
+
+  const voltearHaciaAbajo = () => {
+    setTimeout (() =>{
+      const fichasNuevas=fichas.map((ficha) =>{
+        if (ficha.resuelto === false){
+          ficha.voltear=false
+        }
+      })
+      setFichas(fichasNuevas)
+      resetHandleContador ()
+    }, 2000)
+  }
+
+  const validacion = (id, nombre) => {
+    const validar = isMatched(id, nombre)
+    if (validar){
+      const fichasNuevas=fichas.map((ficha) =>{
+        if (ficha.nombre === nombre){
+          ficha.resuelto = true
+        }
+      })
+      setFichas(fichasNuevas)
+      resetHandleContador()
+    } else {
+      voltearHaciaAbajo()
+    }
+  }
+
   return (
     <>
       <div className='componente-principal'>
-        {fichas.map((ficha) => (
-          <Fichas
-            key={ficha.id}
+        {fichas.map((ficha, index) => (
+          <Ficha
+            key={index}
             id={ficha.id}
             voltear={ficha.voltear}
-            imagen={ficha.imagen}
+            nombre={ficha.nombre}
             resuelto={ficha.resuelto}
-            manejarClic={manejarClic} />
+            manejarClic={voltearHaciaArriba} />
         ))
         }
       </div>
