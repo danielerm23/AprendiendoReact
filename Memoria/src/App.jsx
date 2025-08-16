@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Ficha } from "./componentes/ficha.jsx"
 import { FICHAS } from './contants.js'
@@ -9,59 +8,87 @@ function App() {
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
 
-  const handleContador = (id, nombre) => {
-    setContador(prev => prev + 1)
-    const valor = contador+1
-    if (valor==2){      
-      validacion(id, nombre)
+
+  useEffect(() => {
+    if (contador === 2) {
+      validacion()
     }
+
+  }, [contador])
+
+  const handleContador = () => {
+    setContador(prev => prev + 1)
   }
 
   const resetHandleContador = () => {
-    setContador (0)
+    setContador(0)
   }
 
-  const isMatched = (id, nombre) => {
-    return fichas.some((ficha) => 
-      (ficha.id !== id && nombre === ficha.nombre && ficha.voltear === true)
-    )
-  }
 
   const voltearHaciaArriba = (id) => {
+
+    /*si el contador es 2, se bloquean todas las fichas */
+    if (contador === 2) {
+      return;
+    }
+
+
+
+
     const fichasNuevas = fichas.map((ficha) => {
-      if(ficha.id===id && ficha.resuelto === false && ficha.voltear === false){
-        ficha.voltear=true
-        handleContador(ficha.id, ficha.nombre)
+      if (ficha.id === id && ficha.resuelto === false && ficha.voltear === false) {
+        ficha.voltear = true
+        handleContador();
+
+
       }
       return ficha
     })
+    console.log({ contador })
     setFichas(fichasNuevas)
+
+
   }
 
   const voltearHaciaAbajo = () => {
-    setTimeout (() =>{
-      const fichasNuevas=fichas.map((ficha) =>{
-        if (ficha.resuelto === false){
-          ficha.voltear=false
+    setTimeout(() => {
+      const fichasNuevas = fichas.map((ficha) => {
+        if (ficha.resuelto === false) {
+          ficha.voltear = false
         }
+        return ficha
       })
+
       setFichas(fichasNuevas)
-      resetHandleContador ()
+      resetHandleContador()
     }, 2000)
   }
 
-  const validacion = (id, nombre) => {
-    const validar = isMatched(id, nombre)
-    if (validar){
-      const fichasNuevas=fichas.map((ficha) =>{
-        if (ficha.nombre === nombre){
-          ficha.resuelto = true
-        }
-      })
-      setFichas(fichasNuevas)
-      resetHandleContador()
-    } else {
-      voltearHaciaAbajo()
+  const validacion = () => {
+
+    const fichasVolteadas = fichas.filter((ficha) => (ficha.voltear === true && ficha.resuelto === false))
+
+    if (fichasVolteadas.length === 2) {
+
+      const [ficha1, ficha2] = fichasVolteadas
+
+      if (ficha1.nombre === ficha2.nombre) {
+
+        const nombre = ficha1.nombre
+
+
+        const fichasNuevas = fichas.map((ficha) => {
+          if (ficha.nombre === nombre) {
+            ficha.resuelto = true
+          }
+
+          return ficha
+        })
+        setFichas(fichasNuevas)
+        resetHandleContador()
+      } else {
+        voltearHaciaAbajo()
+      }
     }
   }
 
@@ -82,4 +109,5 @@ function App() {
     </>
   )
 }
+
 export default App

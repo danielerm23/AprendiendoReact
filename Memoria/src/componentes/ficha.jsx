@@ -5,7 +5,7 @@ import "./CSS/fichas.css"
 export function Ficha ({id, voltear, nombre, manejarClic}){
     return (
         <div className={voltear ? "voltear card" : "card"}
-            onClick={()=>manejarClic(id)}>
+            onClick={()=>manejarClic(id, nombre)}>
             <div className="fichas">
                 <img 
                     src={`../../public/img/${nombre}.jpg`}
