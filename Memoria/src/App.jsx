@@ -1,5 +1,4 @@
-import React, { use } from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Ficha } from "./componentes/ficha.jsx"
 import { FICHAS } from './contants.js'
@@ -7,21 +6,21 @@ import {Tiempo} from "./componentes/tiempo.jsx"
 
 function App() {
 
-  const tiempo = () => {
-    if (segundos > 0) {
-      setSegundos(prev => prev -1)
-    } else{
-      location.reload()
-    }
-  }
   const [formatoTiempo, setFormatoTiempo] = useState ()
-  const [segundos, setSegundos] = useState(250)
+  const [segundos, setSegundos] = useState(5)
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
 
   useEffect (() =>{
     const intervalo= setInterval(() => {
-      tiempo()
+      setSegundos (prev =>{
+        if (prev > 0) {
+          return prev-1
+        } else {
+          location.reload()
+          return 0
+        }
+      })
     }, 1000)
     return () => clearInterval(intervalo)
   }, [])
@@ -48,39 +47,42 @@ function App() {
   }
 
   const resetHandleContador = () => {
-    setContador (0)
+    setContador(0)
   }
 
 
   const voltearHaciaArriba = (id) => {
 
-    if (contador === 2){
-      return
+    if (contador === 2) {
+      return;
     }
 
     const fichasNuevas = fichas.map((ficha) => {
-      if(ficha.id===id && ficha.resuelto === false && ficha.voltear === false){
-        ficha.voltear=true
-        handleContador()
+      if (ficha.id === id && ficha.resuelto === false && ficha.voltear === false) {
+        ficha.voltear = true
+        handleContador();
+
+
       }
       return ficha
     })
+    console.log({ contador })
     setFichas(fichasNuevas)
   }
 
 
   const voltearHaciaAbajo = () => {
 
-    setTimeout (() =>{
-      const fichasNuevas=fichas.map((ficha) =>{
-
-        if (ficha.resuelto === false){
-          ficha.voltear=false
+    setTimeout(() => {
+      const fichasNuevas = fichas.map((ficha) => {
+        if (ficha.resuelto === false) {
+          ficha.voltear = false
         }
         return ficha
       })
+
       setFichas(fichasNuevas)
-      resetHandleContador ()
+      resetHandleContador()
     }, 2000)
   }
 
@@ -88,7 +90,6 @@ function App() {
 
     const fichasVolteada = fichas.filter ((ficha) => ficha.voltear === true && ficha.resuelto ===false)
     const [ficha1, ficha2] = fichasVolteada
-
     if (ficha1.nombre === ficha2.nombre){
 
       if (ficha1.nombre === "muerte"){
@@ -108,10 +109,8 @@ function App() {
     } else {
 
       voltearHaciaAbajo()
-
     }
-  }
-    
+  } 
   
   return (
     <>
@@ -134,4 +133,5 @@ function App() {
     </>
   )
 }
+
 export default App
