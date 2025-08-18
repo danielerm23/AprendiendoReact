@@ -1,72 +1,124 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { use } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { Ficha } from "./componentes/ficha.jsx"
 import { FICHAS } from './contants.js'
+import {Tiempo} from "./componentes/tiempo.jsx"
 
 function App() {
 
+  const tiempo = () => {
+    if (segundos > 0) {
+      setSegundos(prev => prev -1)
+    } else{
+      location.reload()
+    }
+  }
+  const [formatoTiempo, setFormatoTiempo] = useState ()
+  const [segundos, setSegundos] = useState(250)
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
 
-  const handleContador = (id, nombre) => {
-    setContador(prev => prev + 1)
-    const valor = contador+1
-    if (valor==2){      
-      validacion(id, nombre)
+  useEffect (() =>{
+    const intervalo= setInterval(() => {
+      tiempo()
+    }, 1000)
+    return () => clearInterval(intervalo)
+  }, [])
+
+  useEffect (() =>{
+    if(contador ===2){
+      validacion()
     }
+  }, [contador])
+
+  useEffect (()=>{
+
+    const minuto = Math.floor(segundos / 60);
+    const segundo = segundos % 60;
+
+    const segFormateados = segundo.toString().padStart(2, "0");
+
+    setFormatoTiempo(`${minuto}:${segFormateados}`)
+    console.log(formatoTiempo)
+  },[segundos])
+
+  const handleContador = () => {
+    setContador(prev => prev + 1)
   }
 
   const resetHandleContador = () => {
     setContador (0)
   }
 
-  const isMatched = (id, nombre) => {
-    return fichas.some((ficha) => 
-      (ficha.id !== id && nombre === ficha.nombre && ficha.voltear === true)
-    )
-  }
 
   const voltearHaciaArriba = (id) => {
+
+    if (contador === 2){
+      return
+    }
+
     const fichasNuevas = fichas.map((ficha) => {
       if(ficha.id===id && ficha.resuelto === false && ficha.voltear === false){
         ficha.voltear=true
-        handleContador(ficha.id, ficha.nombre)
+        handleContador()
       }
       return ficha
     })
     setFichas(fichasNuevas)
   }
 
+
   const voltearHaciaAbajo = () => {
+
     setTimeout (() =>{
       const fichasNuevas=fichas.map((ficha) =>{
+
         if (ficha.resuelto === false){
           ficha.voltear=false
         }
+        return ficha
       })
       setFichas(fichasNuevas)
       resetHandleContador ()
     }, 2000)
   }
 
-  const validacion = (id, nombre) => {
-    const validar = isMatched(id, nombre)
-    if (validar){
-      const fichasNuevas=fichas.map((ficha) =>{
-        if (ficha.nombre === nombre){
+  const validacion = () => {
+
+    const fichasVolteada = fichas.filter ((ficha) => ficha.voltear === true && ficha.resuelto ===false)
+    const [ficha1, ficha2] = fichasVolteada
+
+    if (ficha1.nombre === ficha2.nombre){
+
+      if (ficha1.nombre === "muerte"){
+        location.reload()
+      }
+
+      const fichasNuevas = fichas.map((ficha) => {
+        if (ficha.nombre === ficha1.nombre){
           ficha.resuelto = true
         }
+        return ficha
       })
+
       setFichas(fichasNuevas)
       resetHandleContador()
+
     } else {
+
       voltearHaciaAbajo()
+
     }
   }
-
+    
+  
   return (
     <>
+      <div className='tiempo'>
+        <Tiempo 
+          formatoTiempo={formatoTiempo} />  
+      </div>  
       <div className='componente-principal'>
         {fichas.map((ficha, index) => (
           <Ficha

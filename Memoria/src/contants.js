@@ -41,13 +41,19 @@ export const FICHAS = [
     id: uuidv4(),
     voltear: false,
     nombre: "g310gs",
-    resuelto: false,
+    resuelto: false
+  },
+  {
+    id: uuidv4(),
+    voltear:false,
+    nombre: "muerte",
+    resuelto:false
   },
   {
     id: uuidv4(),
     voltear: false,
     nombre: "monster",
-    resuelto: false,
+    resuelto: false
   },
   {
     id: uuidv4(),
@@ -102,6 +108,12 @@ export const FICHAS = [
     voltear: false,
     nombre: "790",
     resuelto: false,
+  },
+  {
+    id: uuidv4(),
+    voltear:false,
+    nombre: "muerte",
+    resuelto:false
   },
   {
     id: uuidv4(),
