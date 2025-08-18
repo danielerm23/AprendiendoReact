@@ -3,13 +3,16 @@ import './App.css'
 import { Ficha } from "./componentes/ficha.jsx"
 import { FICHAS } from './contants.js'
 import {Tiempo} from "./componentes/tiempo.jsx"
+import { GameOver } from "./componentes/GameOver.jsx"
 
 function App() {
 
+  const flip=new Audio("../public/img/flip.mp3")
   const [formatoTiempo, setFormatoTiempo] = useState ()
   const [segundos, setSegundos] = useState(5)
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
+  const [modal, setModal]=useState(false)
 
   useEffect (() =>{
     const intervalo= setInterval(() => {
@@ -17,7 +20,7 @@ function App() {
         if (prev > 0) {
           return prev-1
         } else {
-          location.reload()
+          mostrarModal()
           return 0
         }
       })
@@ -60,12 +63,14 @@ function App() {
     const fichasNuevas = fichas.map((ficha) => {
       if (ficha.id === id && ficha.resuelto === false && ficha.voltear === false) {
         ficha.voltear = true
+        
         handleContador();
 
       }
       return ficha
 
     })
+    flip.play()
     setFichas(fichasNuevas)
   }
 
@@ -80,10 +85,14 @@ function App() {
         return ficha
       })
 
-
+      flip.play()
       setFichas(fichasNuevas)
       resetHandleContador()
     }, 2000)
+  }
+
+  const mostrarModal = () => {
+    setModal(true)
   }
 
   const validacion = () => {
@@ -93,7 +102,7 @@ function App() {
     if (ficha1.nombre === ficha2.nombre){
 
       if (ficha1.nombre === "muerte"){
-        location.reload()
+        mostrarModal()
       }
 
       const fichasNuevas = fichas.map((ficha) => {
@@ -114,6 +123,9 @@ function App() {
   
   return (
     <>
+      <div className="game-over">
+        <GameOver esModal={modal} />
+      </div>
       <div className='tiempo'>
         <Tiempo 
           formatoTiempo={formatoTiempo} />  
