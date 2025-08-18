@@ -9,10 +9,14 @@ function App() {
 
   const flip=new Audio("../public/img/flip.mp3")
   const [formatoTiempo, setFormatoTiempo] = useState ()
-  const [segundos, setSegundos] = useState(5)
+  const [segundos, setSegundos] = useState(180)
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
-  const [modal, setModal]=useState(false)
+  const [victorias, setVictorias]=useState(0)
+  const [modal, setModal]=useState({
+    resultado:"",
+    valor:false
+  })
 
   useEffect (() =>{
     const intervalo= setInterval(() => {
@@ -44,6 +48,15 @@ function App() {
     setFormatoTiempo(`${minuto}:${segFormateados}`)
     console.log(formatoTiempo)
   },[segundos])
+
+  useEffect(()=>{
+    if (victorias === 28){
+      setModal({
+        resultado:"Ganaste",
+        valor:true
+      })
+    }
+  },[victorias])
 
   const handleContador = () => {
     setContador(prev => prev + 1)
@@ -91,10 +104,6 @@ function App() {
     }, 2000)
   }
 
-  const mostrarModal = () => {
-    setModal(true)
-  }
-
   const validacion = () => {
 
     const fichasVolteada = fichas.filter ((ficha) => ficha.voltear === true && ficha.resuelto ===false)
@@ -102,12 +111,16 @@ function App() {
     if (ficha1.nombre === ficha2.nombre){
 
       if (ficha1.nombre === "muerte"){
-        mostrarModal()
+        setModal({
+          resultado:"Perdiste, Juego Terminado",
+          valor:true
+        })
       }
 
       const fichasNuevas = fichas.map((ficha) => {
         if (ficha.nombre === ficha1.nombre){
           ficha.resuelto = true
+          setVictorias(prev=>prev+1)
         }
         return ficha
       })
@@ -124,7 +137,9 @@ function App() {
   return (
     <>
       <div className="game-over">
-        <GameOver esModal={modal} />
+        <GameOver 
+          esModal={modal.valor}
+          resultado={modal.resultado} />
       </div>
       <div className='tiempo'>
         <Tiempo 

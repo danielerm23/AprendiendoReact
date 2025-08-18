@@ -32,3 +32,6 @@ body{
   background-color: rgb(251, 106, 130);
   border-radius: 25px 25px 0 0;
 }
+.game-over{
+  display:none
+}
