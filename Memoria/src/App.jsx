@@ -62,11 +62,10 @@ function App() {
         ficha.voltear = true
         handleContador();
 
-
       }
       return ficha
+
     })
-    console.log({ contador })
     setFichas(fichasNuevas)
   }
 
@@ -80,6 +79,7 @@ function App() {
         }
         return ficha
       })
+
 
       setFichas(fichasNuevas)
       resetHandleContador()
@@ -133,5 +133,6 @@ function App() {
     </>
   )
 }
+
 
 export default App
