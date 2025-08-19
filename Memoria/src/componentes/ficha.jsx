@@ -12,7 +12,9 @@ export function Ficha ({id, voltear, nombre, manejarClic}){
                     alt={`foto de ${nombre} `} />
             </div>
             <div className ="cara-oculta">
-                <h3>escondida</h3>
+                <img 
+                    src={"../../public/img/silueta.png"}
+                    alt="foto-presentacion" />
             </div>
         </div>
     )

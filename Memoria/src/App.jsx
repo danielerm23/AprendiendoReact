@@ -2,19 +2,63 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { Ficha } from "./componentes/ficha.jsx"
 import { FICHAS } from './contants.js'
+import {Tiempo} from "./componentes/tiempo.jsx"
+import { GameOver } from "./componentes/GameOver.jsx"
 
 function App() {
 
+  const flip=new Audio("../public/img/flip.mp3")
+  const [formatoTiempo, setFormatoTiempo] = useState ()
+  const [segundos, setSegundos] = useState(180)
   const [fichas, setFichas] = useState(FICHAS)
   const [contador, setContador] = useState(0)
+  const [victorias, setVictorias]=useState(0)
+  const [modal, setModal]=useState({
+    resultado:"",
+    valor:false
+  })
 
+  useEffect (() =>{
+    const intervalo= setInterval(() => {
+      setSegundos (prev =>{
+        if (prev > 0) {
+          return prev-1
+        } else {
+          setModal({
+            resultado:"Perdiste, Juego Terminado",
+            valor:true
+          })
+          return 0
+        }
+      })
+    }, 1000)
+    return () => clearInterval(intervalo)
+  }, [])
 
-  useEffect(() => {
-    if (contador === 2) {
+  useEffect (() =>{
+    if(contador ===2){
       validacion()
     }
-
   }, [contador])
+
+  useEffect (()=>{
+
+    const minuto = Math.floor(segundos / 60);
+    const segundo = segundos % 60;
+
+    const segFormateados = segundo.toString().padStart(2, "0");
+
+    setFormatoTiempo(`${minuto}:${segFormateados}`)
+  },[segundos])
+
+  useEffect(()=>{
+    if (victorias === 28){
+      setModal({
+        resultado:"Ganaste",
+        valor:true
+      })
+    }
+  },[victorias])
 
   const handleContador = () => {
     setContador(prev => prev + 1)
@@ -35,22 +79,30 @@ function App() {
 
 
 
+
+    if (contador === 2) {
+      return;
+    }
+
     const fichasNuevas = fichas.map((ficha) => {
       if (ficha.id === id && ficha.resuelto === false && ficha.voltear === false) {
         ficha.voltear = true
+        
         handleContador();
-
 
       }
       return ficha
+
     })
-    console.log({ contador })
+    flip.play()
     setFichas(fichasNuevas)
 
 
   }
 
+
   const voltearHaciaAbajo = () => {
+
     setTimeout(() => {
       const fichasNuevas = fichas.map((ficha) => {
         if (ficha.resuelto === false) {
@@ -59,6 +111,7 @@ function App() {
         return ficha
       })
 
+      flip.play()
       setFichas(fichasNuevas)
       resetHandleContador()
     }, 2000)
@@ -66,34 +119,46 @@ function App() {
 
   const validacion = () => {
 
-    const fichasVolteadas = fichas.filter((ficha) => (ficha.voltear === true && ficha.resuelto === false))
+    const fichasVolteada = fichas.filter ((ficha) => ficha.voltear === true && ficha.resuelto ===false)
+    const [ficha1, ficha2] = fichasVolteada
+    if (ficha1.nombre === ficha2.nombre){
 
-    if (fichasVolteadas.length === 2) {
-
-      const [ficha1, ficha2] = fichasVolteadas
-
-      if (ficha1.nombre === ficha2.nombre) {
-
-        const nombre = ficha1.nombre
-
-
-        const fichasNuevas = fichas.map((ficha) => {
-          if (ficha.nombre === nombre) {
-            ficha.resuelto = true
-          }
-
-          return ficha
+      if (ficha1.nombre === "muerte"){
+        setModal({
+          resultado:"Perdiste, Juego Terminado",
+          valor:true
         })
-        setFichas(fichasNuevas)
-        resetHandleContador()
-      } else {
-        voltearHaciaAbajo()
+        return ficha1
       }
-    }
-  }
 
+      const fichasNuevas = fichas.map((ficha) => {
+        if (ficha.nombre === ficha1.nombre){
+          ficha.resuelto = true
+          setVictorias(prev=>prev+1)
+        }
+        return ficha
+      })
+
+      setFichas(fichasNuevas)
+      resetHandleContador()
+
+    } else {
+
+      voltearHaciaAbajo()
+    }
+  } 
+  
   return (
     <>
+      <div className="game-over">
+        <GameOver 
+          esModal={modal.valor}
+          resultado={modal.resultado} />
+      </div>
+      <div className='tiempo'>
+        <Tiempo 
+          formatoTiempo={formatoTiempo} />  
+      </div>  
       <div className='componente-principal'>
         {fichas.map((ficha, index) => (
           <Ficha
@@ -109,5 +174,6 @@ function App() {
     </>
   )
 }
+
 
 export default App

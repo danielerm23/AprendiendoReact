@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const FICHAS = [
+const CARTAS = [
   {
     id: uuidv4(),
     voltear: false,
@@ -41,13 +41,19 @@ export const FICHAS = [
     id: uuidv4(),
     voltear: false,
     nombre: "g310gs",
-    resuelto: false,
+    resuelto: false
+  },
+  {
+    id: uuidv4(),
+    voltear:false,
+    nombre: "muerte",
+    resuelto:false
   },
   {
     id: uuidv4(),
     voltear: false,
     nombre: "monster",
-    resuelto: false,
+    resuelto: false
   },
   {
     id: uuidv4(),
@@ -102,6 +108,12 @@ export const FICHAS = [
     voltear: false,
     nombre: "790",
     resuelto: false,
+  },
+  {
+    id: uuidv4(),
+    voltear:false,
+    nombre: "muerte",
+    resuelto:false
   },
   {
     id: uuidv4(),
@@ -170,3 +182,17 @@ export const FICHAS = [
     resuelto: false,
   },
 ];
+
+function shuffleArray(arr) {
+  
+  let array = [...arr]; // copiamos el array para no mutar el original
+  for (let i = array.length - 1; i > 0; i--) {
+    // índice aleatorio entre 0 e i
+    const j = Math.floor(Math.random() * (i + 1));
+    // intercambio
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+export const FICHAS = shuffleArray(CARTAS);
