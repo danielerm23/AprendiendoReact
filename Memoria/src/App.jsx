@@ -84,6 +84,15 @@ function App() {
 
   const voltearHaciaArriba = (id) => {
 
+    /*si el contador es 2, se bloquean todas las fichas */
+    if (contador === 2) {
+      return;
+    }
+
+
+
+
+
     if (contador === 2) {
       return;
     }
