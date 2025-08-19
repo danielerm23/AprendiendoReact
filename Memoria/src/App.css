@@ -14,7 +14,7 @@ body{
   justify-content: center;
   display: grid;
   grid-template-columns: repeat(6, 1fr); /* 6 columnas iguales */
-  gap: 2px; /* espacio entre elementos */
+  gap: 2px;
   height: auto;
   width: auto;
   border: 2px solid white;
@@ -31,7 +31,4 @@ body{
   color:black;
   background-color: rgb(251, 106, 130);
   border-radius: 25px 25px 0 0;
-}
-.game-over{
-  display:none
 }

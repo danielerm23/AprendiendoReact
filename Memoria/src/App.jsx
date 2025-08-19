@@ -24,7 +24,10 @@ function App() {
         if (prev > 0) {
           return prev-1
         } else {
-          mostrarModal()
+          setModal({
+            resultado:"Perdiste, Juego Terminado",
+            valor:true
+          })
           return 0
         }
       })
@@ -46,7 +49,6 @@ function App() {
     const segFormateados = segundo.toString().padStart(2, "0");
 
     setFormatoTiempo(`${minuto}:${segFormateados}`)
-    console.log(formatoTiempo)
   },[segundos])
 
   useEffect(()=>{
@@ -115,6 +117,7 @@ function App() {
           resultado:"Perdiste, Juego Terminado",
           valor:true
         })
+        return ficha1
       }
 
       const fichasNuevas = fichas.map((ficha) => {
