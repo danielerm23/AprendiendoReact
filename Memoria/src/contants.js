@@ -41,19 +41,19 @@ const CARTAS = [
     id: uuidv4(),
     voltear: false,
     nombre: "g310gs",
-    resuelto: false
+    resuelto: false,
   },
   {
     id: uuidv4(),
-    voltear:false,
+    voltear: false,
     nombre: "muerte",
-    resuelto:false
+    resuelto: false,
   },
   {
     id: uuidv4(),
     voltear: false,
     nombre: "monster",
-    resuelto: false
+    resuelto: false,
   },
   {
     id: uuidv4(),
@@ -111,9 +111,9 @@ const CARTAS = [
   },
   {
     id: uuidv4(),
-    voltear:false,
+    voltear: false,
     nombre: "muerte",
-    resuelto:false
+    resuelto: false,
   },
   {
     id: uuidv4(),
@@ -184,14 +184,17 @@ const CARTAS = [
 ];
 
 function shuffleArray(arr) {
-  
   let array = [...arr]; // copiamos el array para no mutar el original
-  for (let i = array.length - 1; i > 0; i--) {
-    // índice aleatorio entre 0 e i
+
+  array.forEach((_, i) => {
+    let aux;
+
     const j = Math.floor(Math.random() * (i + 1));
-    // intercambio
-    [array[i], array[j]] = [array[j], array[i]];
-  }
+    aux = array[i];
+    array[i] = array[j];
+    array[j] = aux;
+  });
+
   return array;
 }
 
