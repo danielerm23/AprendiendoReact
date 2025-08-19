@@ -8,6 +8,7 @@ import { GameOver } from "./componentes/GameOver.jsx"
 function App() {
 
   const flip=new Audio("../public/img/flip.mp3")
+
   const [formatoTiempo, setFormatoTiempo] = useState ()
   const [segundos, setSegundos] = useState(180)
   const [fichas, setFichas] = useState(FICHAS)
@@ -18,7 +19,10 @@ function App() {
     valor:false
   })
 
+  
   useEffect (() =>{
+    if (modal.valor) return;
+
     const intervalo= setInterval(() => {
       setSegundos (prev =>{
         if (prev > 0) {
@@ -33,13 +37,17 @@ function App() {
       })
     }, 1000)
     return () => clearInterval(intervalo)
-  }, [])
+  }, [modal.valor])
+  
+
 
   useEffect (() =>{
     if(contador ===2){
       validacion()
     }
   }, [contador])
+
+
 
   useEffect (()=>{
 
@@ -51,6 +59,8 @@ function App() {
     setFormatoTiempo(`${minuto}:${segFormateados}`)
   },[segundos])
 
+
+
   useEffect(()=>{
     if (victorias === 28){
       setModal({
@@ -60,9 +70,12 @@ function App() {
     }
   },[victorias])
 
+
+
   const handleContador = () => {
     setContador(prev => prev + 1)
   }
+
 
   const resetHandleContador = () => {
     setContador(0)
@@ -87,6 +100,7 @@ function App() {
     })
     flip.play()
     setFichas(fichasNuevas)
+
   }
 
 
@@ -105,6 +119,7 @@ function App() {
       resetHandleContador()
     }, 2000)
   }
+
 
   const validacion = () => {
 
@@ -137,6 +152,7 @@ function App() {
     }
   } 
   
+
   return (
     <>
       <div className="game-over">

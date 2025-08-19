@@ -1,14 +1,15 @@
 import React from "react";
 import "./CSS/gameover.css"
 
-export function GameOver ({esModal, resultado}) {
+export function GameOver({ esModal, resultado }) {
     return (
-
-        <div id="modal" className={esModal ? "modal modal-on" : "modal modal-off"}>
-            <div className="modal-content">
-                <h2>{resultado}</h2>
-                <button id="reiniciar" onClick ={ () => location.reload() }>Reiniciar</button>
-            </div>
-        </div>
+        <> {esModal ?
+            <div className="modal">
+                <div className="modal-content">
+                    <h2>{resultado}</h2>
+                    <button onClick={() => location.reload()}>Reiniciar</button>
+                </div>
+            </div> : null}
+        </>
     )
 }

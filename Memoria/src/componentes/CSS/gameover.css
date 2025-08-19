@@ -10,19 +10,17 @@
 }
 
 .modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   background-color: #fff;
   margin: 15% auto; 
   padding: 20px;
   border-radius: 10px;
   width: 300px;
   text-align: center;
-}
-
-.modal-on{
-    display:block;
-}
-.modal-off{
-    display:none
+  color: black;
 }
 
 button {
