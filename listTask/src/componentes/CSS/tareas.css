@@ -1,0 +1,19 @@
+.contenedor-tareas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.tareas{
+  display: flex;
+  flex-wrap: wrap;
+  width: 350px;
+  height: auto;
+  gap: 8px;
+}
+h1{
+  color: black;
+}
+.ocultar{
+  display:none
+}

@@ -1,0 +1,11 @@
+.boton-ingresos{
+    width: 90px;
+    height: 30px;
+    font-size: 10px;
+
+}
+
+.input-ingreso{
+    display: flex;
+    align-items: center;
+}

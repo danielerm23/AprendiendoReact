@@ -1,0 +1,30 @@
+.tarea{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid white;
+    border-radius: 25px;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px 10px 20px;
+    background-color: transparent;
+    color: black;
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+}
+.eliminar{
+    background-color: transparent;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+}
+.eliminar:hover{
+    background-color: rgb(135, 255, 255);
+}
+.tarea-completa{
+    background-color: pink;    
+    text-decoration: line-through;
+    cursor: pointer;
+    user-select: none;
+}
