@@ -53,7 +53,7 @@ export function Finanzas({ esMostrar }) {
             return acumulador + gasto.valor
         }, 0)
 
-        setBalance(ingresoBalance-gastoBalance)
+        setBalance((ingresoBalance-gastoBalance).toFixed(2))
 
     }, [ingresos, gastos])
 
