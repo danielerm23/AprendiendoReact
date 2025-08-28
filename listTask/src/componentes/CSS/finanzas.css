@@ -14,7 +14,7 @@
     
 }
 
-.ingresos, .gastos{
+.ingresos .gastos{
     display: flex;
     flex-direction: column;
     width: 360px;
@@ -38,3 +38,9 @@
     display:none
 }
 
+@media (max-width: 450px) {
+    .datos-finanzas{
+        display: flex;
+        flex-direction: column;
+    }
+}

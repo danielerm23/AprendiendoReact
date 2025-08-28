@@ -23,6 +23,7 @@ body{
   border: 0.5px solid rgb(69, 69, 69);
   border-radius: 25px;
   padding: 5px;
+  box-sizing: border-box;
 }
 .boton-opcion{
   width: 500px;
@@ -45,4 +46,10 @@ body{
   background-color: pink;
   border-radius: 25px;
   padding: 0
+}
+
+@media (max-width: 450px) {
+    .boton-opcion{
+        max-width: 400px;
+    }
 }

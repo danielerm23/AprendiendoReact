@@ -18,7 +18,7 @@ export function Finanzas({ esMostrar }) {
             id :  uuidv4(),
             tipo : "ingreso"
         }
-        console.log(ingresos)
+    
         setIngresos([nuevoIngreso, ...ingresos])
     }
 
@@ -28,7 +28,7 @@ export function Finanzas({ esMostrar }) {
             id :  uuidv4(),
             tipo : "gasto"
         }
-        console.log(gastos)
+    
         setGastos([nuevoGasto, ...gastos])
     }
 
@@ -54,6 +54,8 @@ export function Finanzas({ esMostrar }) {
         }, 0)
 
         setBalance((ingresoBalance-gastoBalance).toFixed(2))
+
+        console.log(ingresos, gastos + "useEffect")
 
     }, [ingresos, gastos])
 
