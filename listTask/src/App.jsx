@@ -20,7 +20,9 @@ function App() {
       <div className="interfaz">
 
         <button className={ (tareas || finanzas) ? "back" : 'ocultar' }
-                onClick={()=> botonBack()} >⬅️</button>
+                onClick={()=> botonBack()} >
+                  ⬅️
+        </button>
       
         <div className="opciones">
           <button className={ (tareas || finanzas) ? 'ocultar' : "boton-opcion" } 
